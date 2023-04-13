@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+ <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>My activities</title>
+  </head>
+
+  <body>
+
+    <main>
+        <ul>
+            <li th:each="activity: ${activities}">
+                <ul>
+                    <li th:text="${activity.name}" ></li>
+                    <li th:text="${activity.description}" ></li>
+                    <li th:text="${activity.course.name}" ></li>
+                </ul>
+            </li>
+        </ul>
+    </main>
+
+   
+  </body>
+</html>

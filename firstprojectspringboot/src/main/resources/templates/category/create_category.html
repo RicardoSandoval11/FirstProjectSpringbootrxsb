@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>create a new course</title>
+</head>
+<body class="bg-light">
+    <!-- header -->
+    <header th:insert="~{fragments/header :: header }"></header>
+    <!-- Form -->
+    <div class="container">
+        <div class="row d-flex justify-content-center mt-5">
+            <form 
+                th:action="@{/categories/save-category}" 
+                method="POST" 
+                class="col-12 col-md-8 col-lg-6"
+                th:object="${category}"
+                enctype="multipart/form-data"
+            >
+                <div class="row d-flex justify-content-center" th:if="${#fields.hasErrors('*')}">
+                    <div class="alert alert-danger">
+                        <div class="h4 alert-heading">
+                            Fix the following errors:
+                        </div>
+                        <p th:if="${#fields.hasErrors('name')}">- Invalid name</p>
+                        <p th:if="${#fields.hasErrors('description')}">- Invalid name</p>
+                        <p th:if="${#fields.hasErrors('cover_image')}">- Invalid format for image</p>
+                    </div>
+                </div>
+                <input 
+                    type="hidden" 
+                    th:field="*{id_category}"
+                >
+                <input 
+                    type="hidden" 
+                    th:field="*{cover_image}"
+                >
+                <div class="form-group">
+                    <label for="name" class="my-3">Name</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="name" 
+                        name="name"
+                        placeholder="Name of the cateogry"
+                        th:field="*{name}"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="coverImage" class="my-3">Cover image</label>
+                    <input 
+                        type="file" 
+                        class="form-control" 
+                        id="coverImage" 
+                        name="coverImage"
+                    >
+                </div>
+                <div class="form-group my-2">
+                    <label for="description">Description</label>
+                    <textarea 
+                        name="description" 
+                        id="description" 
+                        cols="30" 
+                        rows="10"
+                        class="form-control"
+                        th:field="*{description}"
+                    ></textarea>
+                </div>
+                <div class="form-group d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary my-3">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+    <script>
+        tinymce.init({ 
+            selector: '#description',
+            plugins: "textcolor, table lists code",
+            toolbar: " undo redo | bold italic | alignleft aligncenter alignright alignjustify \n\
+                    | bullist numlist outdent indent | forecolor backcolor table code"
+        });
+    </script>
+    <title>Update activity</title>
+</head>
+    <body>
+        <header th:insert="~{fragments/header :: header }"></header>  
+        <main role="main">     
+            <div class="container">
+                <div class="row d-flex justify-content-center mt-5">
+                    <form 
+                        th:action="@{/activity/save-changes}"
+                        method="post" 
+                        th:object="${activity}"
+                        class="col-12 col-md-8 col-lg-6 d-flex flex-wrap justify-content-between"
+                    >
+                        <input 
+                            type="hidden" 
+                            class="form-control" 
+                            id="name" 
+                            name="name"
+                            th:field="*{id_activity}"
+                        >
+                        <div class="form-group my-3 col-12">
+                            <label for="name" class="my-3">Name of the activity</label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="name" 
+                                name="name"
+                                field="*{name}"
+                                th:value="${activity.name}"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <input 
+                                type="hidden" 
+                                class="form-control" 
+                                id="course" 
+                                name="course"
+                                field="*{course}"
+                                th:value="${activity.course.id_course}"
+                            >
+                        </div>
+                        <div class="form-group my-4">
+                            <input 
+                                type="hidden" 
+                                class="form-control" 
+                                id="assigned" 
+                                name="assigned"
+                                th:field="*{assigned}"
+                            >
+                        </div>
+                        <div class="form-group my-4 col-12">
+                            <label for="type">Type</label>
+                            <select 
+                                class="form-control" 
+                                id="type"
+                                name="type"
+                                th:field="*{type}"
+                            >
+                            <option th:value="test" th:text="Test"></option>
+                            <option th:value="worksheet" th:text="Worksheet"></option>
+                            <option th:value="project" th:text="Project"></option>
+                            <option th:value="support" th:text="'Support material'"></option>
+                            </select>
+                        </div>
+                        <div class="form-group my-4 col-12 col-md-5 mx-1">
+                            <label for="start_date">Start date:</label>
+                            <input 
+                                type="date" 
+                                class="form-control" 
+                                name="start_date" 
+                                th:field="*{start_date}" 
+                                id="start_date" 
+                                required="required"
+                            >
+                        </div> 
+                        <div class="form-group my-4 col-12 col-md-5 mx-1">
+                            <label for="end_date">End date:</label>
+                            <input 
+                                type="date" 
+                                class="form-control" 
+                                name="end_date" 
+                                th:field="*{end_date}" 
+                                id="end_date" 
+                                required="required"
+                            >
+                        </div> 
+                        <div class="form-group my-4 col-12">
+                            <label for="description" class="my-3">Description</label>
+                            <textarea  
+                                class="form-control" 
+                                id="description" 
+                                name="description"
+                                th:field="*{description}"
+                            ></textarea>
+                        </div>
+                        <div class="form-group d-flex justify-content-center col-12">
+                            <button type="submit" class="btn btn-success my-3">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    </body>
+</html>

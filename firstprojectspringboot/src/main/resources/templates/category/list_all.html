@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Available courses</title>
+  </head>
+
+  <body>
+    <header th:insert="~{fragments/header :: header }"></header>  
+    <main role="main">     
+      <div class="container">
+        <div class="row d-flex justify-content-center mt-5" th:if="${category_created_msg != null}">
+            <div class="col-12 col-lg-6">
+                <div class="alert alert-success">
+                    <p class="h4 alert-heading">Category Saved Successfully!</p>
+                    <hr>
+                    <p><b th:text="${category_created_msg}"></b></p>
+                </div>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center mt-5" th:if="${delete_message != null}">
+            <div class="col-12 col-lg-6">
+                <div class="alert alert-warning">
+                    <p class="h4 alert-heading">Category Remove action</p>
+                    <hr>
+                    <p><b th:text="${delete_message}"></b></p>
+                </div>
+            </div>
+        </div>
+        <div class="row d-flex course-filter-row justify-content-between py-2" th:each="category : ${categories}">
+            <div class="col-12 col-md-8">
+                <p class="h4" th:text="${category.name}"></p>
+                <p th:text="${category.description}"></p>
+                <hr>
+                <a th:href="@{/categories/edit/{id} (id=${category.id_category})}" class="btn btn-primary">Edit</a>
+                <a th:href="@{/categories/remove/{id} (id=${category.id_category})}" class="btn btn-danger">Remove</a>
+            </div>
+            <img 
+            th:src="@{/cover-imgs/{img} (img=${category.cover_image})}" 
+            alt="Cover image" 
+            class="d-block d-none d-md-block col-md-4"
+            width="300"
+            >
+        </div>
+        <div class="row d-flex justify-content-center mt-5" th:if="${#lists.isEmpty(categories)}">
+            <div class="col-12 col-lg-6">
+                <div class="alert alert-warning">
+                    <p class="h4 alert-heading">No categories available</p>
+                    <hr>
+                    <p>Create a new categorie to start adding courses to your platform.</p>
+                </div>
+            </div>
+        </div>
+
+        <nav th:if="${categories.totalPages > 1}" aria-label="Page navigation example" class="col-12 mt-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${categories.number == 0 ? 'disabled' : ''}">
+                    <a th:href="${'/categories/list-all?page='+{categories.number - 1}}" class="page-link">Previous</a>
+                </li>
+                            
+                <li class="page-item" th:classappend="${i eq categories.number + 1} ? 'active'" th:each="i : ${#numbers.sequence( 1, categories.totalPages, 1)}">
+                    <a class="page-link" th:href="${'/categories/list-all?page=' + {i-1} }" th:text="${i}" th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                </li>
+
+                <li class="page-item" th:classappend="${categories.number == (categories.totalPages - 1) ? 'disabled' : ''}">
+                    <a th:href="${'/categories/list-all?page=' + {categories.number + 1}}" class="page-link">Next</a>
+                </li>
+            </ul>
+        </nav>
+
+      </div> 
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+
+

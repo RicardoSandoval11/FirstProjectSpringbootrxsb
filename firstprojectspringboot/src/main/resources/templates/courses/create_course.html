@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>create a new course</title>
+</head>
+<body class="bg-light">
+    <!-- header -->
+    <header th:insert="~{fragments/header :: header }"></header>
+    <!-- Form -->
+    <div class="container">
+        <div class="row d-flex justify-content-center mt-5">
+            <form 
+                th:action="@{/save-new-course}" 
+                method="POST" 
+                class="col-12 col-md-8 col-lg-6"
+                th:object="${course}"
+                enctype="multipart/form-data"
+            >
+                <div class="row d-flex justify-content-center" th:if="${#fields.hasErrors('*')}">
+                    <div class="alert alert-danger">
+                        <div class="h4 alert-heading">
+                            The following errors were found:
+                        </div>
+                        <p th:if="${#fields.hasErrors('name')}">- Invalid Name of Course</p>
+                        <p th:if="${#fields.hasErrors('type')}">- Invalid Type</p>
+                        <p th:if="${#fields.hasErrors('start_date')}">- Invalid Date in Start Date</p>
+                        <p th:if="${#fields.hasErrors('end_date')}">- Invalid date in End Date</p>
+                        <p th:if="${#fields.hasErrors('grade')}">- Invalid Grade</p>
+                        <p th:if="${#fields.hasErrors('description')}">- Description cannot be empty</p>
+                        <p th:if="${#fields.hasErrors('cover_image')}">- Invalid image file</p>
+                        <p th:if="${#fields.hasErrors('teacher')}">- Select a valid Teacher</p>
+                        <p th:if="${#fields.hasErrors('category')}">- Select a valid category</p>
+                    </div>
+                </div>
+                <input type="hidden" th:field="*{id_course}">
+                <input type="hidden" th:field="*{cover_image}">
+                <div class="form-group">
+                    <label for="name" class="my-3">Name</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="name" 
+                        name="name"
+                        placeholder="Name of the course"
+                        th:field="*{name}"
+                        required
+                    >
+                </div>
+                <div class="row d-flex justify-content-between">
+                    <div class="form-group col-6">
+                        <label for="start_date" class="my-3">Start date</label>
+                        <input 
+                            type="date" 
+                            class="form-control" 
+                            id="start_date" 
+                            name="start_date"
+                            th:field="*{start_date}"
+                            required
+                        >
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="end_date" class="my-3">End date</label>
+                        <input 
+                            type="date" 
+                            class="form-control" 
+                            id="end_date" 
+                            name="end_date"
+                            th:field="*{end_date}"
+                            required
+                        >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="my-3">Total grade</label>
+                    <input 
+                        type="number" 
+                        class="form-control" 
+                        id="grade" 
+                        placeholder="100"
+                        name="grade"
+                        th:field="*{grade}"
+                        required
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="coverImage" class="my-3">Cover image</label>
+                    <input 
+                        type="file" 
+                        class="form-control" 
+                        id="coverImage" 
+                        name="coverImage"
+                    >
+                </div>
+                <div class="form-group my-2">
+                    <label for="description">Description</label>
+                    <textarea 
+                        name="description" 
+                        id="description" 
+                        cols="30" 
+                        rows="10"
+                        class="form-control"
+                        th:field="*{description}"
+                        required
+                    ></textarea>
+                </div>
+                <div class="row d-flex justify-content-between">
+                    <div class="form-group col-6">
+                        <label for="teacher">Teacher</label>
+                        <select id="teacher" th:field="*{teacher.id_user}" class="form-control" required> 
+                            <option 
+                                th:each="teacher: ${teachers}" 
+                                th:value="${teacher.id_user}"
+                                th:text="${teacher.name}"
+                            ></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="category">Category</label>
+                        <select id="category" th:field="*{category.id_category}" class="form-control" required>
+                            <option 
+                                th:each="category: ${categories}" 
+                                th:value="${category.id_category}"
+                                th:text="${category.name}"
+                            ></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary my-3">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</body>
+</html>

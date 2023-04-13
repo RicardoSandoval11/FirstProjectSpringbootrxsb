@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Make delivery</title>
+</head>
+    <body>
+        <header th:insert="~{fragments/header :: header }"></header>  
+        <main role="main">    
+            <div class="container">
+              <div class="row d-flex mt-4 justify-content-center">
+                <div class="col-12 col-lg-8">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="card-title h3" th:text="${activity.name}"></div>
+                      <div class="card-subtitle mb-2 text-muted" th:text="${activity.type}"></div>
+                      <hr>                          
+                      <p><b>Open: </b><span th:text="${#dates.format(activity.start_date,'dd-MM-yyyy') }"></span></p>
+                      <p><b>Close: </b><span th:text="${#dates.format(activity.end_date,'dd-MM-yyyy') }"></span></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-8 mt-5 bg-secondary p-2 text-light rounded">
+                    <div class="h2 text-center">Add delivery</div>
+                    <hr>
+                    <form 
+                        th:action="@{/save-delivery}" 
+                        method="post" 
+                        class="d-flex flex-wrap justify-content-center mt-4"
+                        enctype="multipart/form-data"
+                    >
+                        <div class="form-group">
+                            <input 
+                                type="hidden" 
+                                name="id_activity" 
+                                id="id_activity" 
+                                th:value="${activity.id_activity}"
+                                readonly
+                            >
+                        </div>
+                        <div class="form-group">
+                            <input 
+                                type="hidden" 
+                                name="id_user" 
+                                id="id_user" 
+                                th:value="${userId}"
+                                readonly
+                            >
+                        </div>
+                        <div class="form-group d-flex align-items-center flex-wrap col-12 col-lg-8 mx-1">
+                            <label for="work" class="col-6">Upload your work</label>
+                            <input 
+                                type="file" 
+                                class="form-control-file col-6" 
+                                id="work"
+                                name="work"
+                            >
+                        </div>
+                        <div class="form-group my-4 d-flex flex-wrap col-12 col-lg-8 mx-1">
+                            <label for="comments" class="my-3">Comments</label>
+                            <textarea  
+                                class="form-control col-12" 
+                                id="comments" 
+                                name="comments"
+                            ></textarea>
+                        </div>
+                        <div class="form-group col-12 mt-3 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary">Send my work</button>
+                        </div>
+                    </form>
+                  </div>
+              </div>
+            </div> 
+          </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    </body>
+</html>

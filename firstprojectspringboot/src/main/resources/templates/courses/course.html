@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Course</title>
+  </head>
+
+  <body>
+    <header th:insert="~{fragments/header :: header }"></header>  
+    <main role="main">    
+      <div class="row d-flex flex-start m-3" th:unless="${#lists.isEmpty(course.users)}">
+        <div class="col-5">
+          <a 
+            th:href="@{/create-activity/{id} (id=${course.id_course})}" 
+            class="btn btn-primary"
+            sec:authorize="hasAnyAuthority('teacher')"
+          >
+            Create activity
+          </a>
+        </div>
+      </div> 
+      <div class="row d-flex flex-column align-items-center m-3">
+        <div class="col-12 col-lg-8">
+          <!-- FOR STUDENTS -->
+          <div th:each="activity: ${activities}" sec:authorize="hasAnyAuthority('student')">
+            <div class="card mt-4" th:if="${activity.assigned == 1}">
+              <div class="card-body" >
+                <div class="card-title"> <p class="h2" th:text="${activity.name}"></p></div>
+                <p class="card-text my-4" th:utext="${activity.description}"></p>
+                <a th:href="@{/view-activity/{id} (id=${activity.id_activity})}" class="btn btn-dark">Open</a>
+              </div>
+            </div>
+          </div>
+          <!-- FOR TEACHERS -->
+          <div sec:authorize="hasAnyAuthority('teacher')">
+            <div class="row d-flex justify-content-center mt-5" th:if="${success_deleted_activity != null}">
+              <div class="alert alert-warning">
+                  <h4 class="alert-heading">Activity deleted successfully</h4>
+                  <hr>
+                  <p th:text="${success_deleted_activity}"></p>
+              </div>
+            </div>
+            <div class="card mt-4" th:each="activity: ${activities}">
+              <div class="card-body" >
+                <div class="card-title"> <p class="h2" th:text="${activity.name}"></p></div>
+                <p class="card-text my-4" th:utext="${activity.description}"></p>
+                <a th:href="@{/view-activity/{id} (id=${activity.id_activity})}" class="btn btn-dark">View</a>
+                <a 
+                  th:href="@{/assign/{id} (id=${activity.id_activity})}" 
+                  sec:authorize="hasAnyAuthority('teacher')" 
+                  class="btn btn-warning"
+                  th:if="${activity.assigned == 0}"
+                >
+                  Assign
+                </a>
+                <a 
+                  th:href="@{/view-deliveries/{id} (id=${activity.id_activity})}"
+                  sec:authorize="hasAnyAuthority('teacher')" 
+                  class="btn btn-success"
+                  th:unless="${activity.assigned  == 0}"
+                  th:if="${activity.type != 'support'}"
+                >
+                  View deliveries
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- FOR STUDENTS -->
+        <div 
+          class="col-12 col-lg-8 d-flex justify-content-center mt-5" 
+          th:if="${#lists.isEmpty(activities)}"
+          sec:authorize="hasAnyAuthority('student')"
+        >
+          <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Oops!</h4>
+            <p>You don't have activities yet</p>
+            <hr>
+            <p class="mb-0">Come back when your teacher assigns you a new task to deliver</p>
+          </div>
+        </div>
+        <!-- FOR TEACHERS -->
+        <div 
+          class="col-12 col-lg-8 d-flex justify-content-center mt-5" 
+          th:if="${#lists.isEmpty(activities)}"
+          sec:authorize="hasAnyAuthority('teacher')"
+        >
+          <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Oops!</h4>
+            <p>You don't have activities yet</p>
+            <hr>
+            <p class="mb-0" th:unless="${#lists.isEmpty(course.users)}">Create an activity for your students</p>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+

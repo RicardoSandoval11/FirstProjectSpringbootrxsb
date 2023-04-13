@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Home</title>
+</head>
+<body>
+    <!-- header -->
+    <header th:insert="~{fragments/header :: header }"></header>
+    <div class="container">
+        <div class="row d-flex bg-secondary rounded p-3">
+            <h1 class="my-2 text-light">Welcome to <b>Courses Platform</b></h1>
+            <hr>
+            <p th:text="'On this platform you will be able to find 3000+ courses, which 
+            will help you get specializations, professional certificates for free. This 
+            will allow you to boost your professional career and achieve your goals in the 
+            world of work.'" class="text-light"></p>
+        </div>
+        <div class="row my-3">
+            <p class="display-4">Explore the platform categories:</p>
+        </div>
+        <div class="row d-flex justify-content-center category-row rounded mb-3" th:each="category : ${categories}">
+            <div class="col-12 col-xl-8">
+                <div class="my-1">
+                    <div class="d-flex flex-row flex-wrap rounded p-3 justify-content-between">
+                        <img th:src="@{/cover-imgs/{img} (img=${category.cover_image})}" alt="category image" class="rounded col-12 col-md-5" width="300">
+                        <div class="rounded col-12 col-md-7 p-3">
+                            <div class="display-6 my-2" th:text="${category.name}"></div>
+                            <div class="my-4" th:text="${category.description}"></div>
+                            <hr>
+                            <div class="card-link"><a th:href="@{/filter/{id} (id=${category.id_category})}" class="btn btn-info text-light">View related courses</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</body>
+</html>

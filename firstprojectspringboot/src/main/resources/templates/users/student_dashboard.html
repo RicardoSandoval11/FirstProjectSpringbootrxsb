@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Dashboard</title>
+  </head>
+
+  <body>
+    <header th:insert="~{fragments/header :: header }"></header>  
+    <main role="main">     
+      <div class="container"> 
+        <div th:if="${!activities.hasContent()}" class="row d-flex justify-content-center my-5">
+          <div class="alert alert-success">
+            <div class="alert-heading display-5">
+              You Have Completed All Your Pending Deliveries!
+            </div>
+          </div>
+        </div>
+        <div th:if="${activities.hasContent()}">
+            <div class="row d-flex justify-content-center my-5">
+                <p class="display-5 text-center">Pending Deliveries</p>
+            </div>
+            <div class="row d-flex justify-content-center mt-3" th:each="activity: ${activities}">
+                <div class="card shadow p-3">
+                    <div class="card-title h4 text-center"><b>Activity Name: </b><span th:text="${activity.activityName}"></span></div>
+                    <div class="card-body">
+                        <div class="card-text mb-2"><b class="text-warning">Pending For Delivering</b></div>
+                        <div class="card-text mb-2"><b>Start Date: </b><span th:text="${activity.start_date}"></span></div>
+                        <div class="card-text mb-2"><b>End Date: </b><span th:text="${activity.end_date}"></span></div>
+                        <div class="card-text mb-2"><b>Course: </b><span th:text="${activity.courseName}"></span></div>
+                        <a th:href="@{/view-activity/{id} (id=${activity.id_activity})}" class="card-link text-center">Open Activity</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav th:if="${activities.totalPages > 1}" aria-label="Page navigation example" class="col-12 mt-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${activities.number == 0 ? 'disabled' : ''}">
+                    <a th:href="${'/dashboard/student?page='+{activities.number - 1}}" class="page-link">Previous</a>
+                </li>
+                            
+                <li class="page-item" th:classappend="${i eq activities.number + 1} ? 'active'" th:each="i : ${#numbers.sequence( 1, activities.totalPages, 1)}">
+                    <a class="page-link" th:href="${'/dashboard/student?page=' + {i-1} }" th:text="${i}" th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                </li>
+
+                <li class="page-item" th:classappend="${activities.number == (activities.totalPages - 1) ? 'disabled' : ''}">
+                    <a th:href="${'/dashboard/student?page='+{activities.number + 1}}" class="page-link">Next</a>
+                </li>
+            </ul>
+        </nav>
+      </div> 
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+

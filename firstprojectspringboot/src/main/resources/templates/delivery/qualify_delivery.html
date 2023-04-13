@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Qualify delivery</title>
+</head>
+    <body>
+        <header th:insert="~{fragments/header :: header }"></header>  
+        <main role="main">    
+            <div class="container">
+              <div class="row d-flex justify-content-center mt-4">
+                <div class="col-12 col-lg-8">
+                    <div class="card d-flex justify-content-center">
+                        <div class="card-body">
+                            <div class="card-title h2 text-center" th:text="${delivery.activity.name}"></div>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item h5 font-weight-normal"><b>Student: </b><span th:text="${delivery.user.username}"></span></li>
+                            <li class="list-group-item h5 font-weight-normal"><b>Delivery date: </b><span th:text="${#dates.format(delivery.date,'dd-MM-yyyy')}"></span></li>
+                            <li class="list-group-item h5 font-weight-normal" th:if="${delivery.grade != null}"><b>Grade: </b><span th:text="${delivery.grade}"></span></li>
+                            <li class="list-group-item h5 font-weight-normal" th:unless="${delivery.grade != null}"><b>Grade: </b><span>0.00</span></li>
+                            <li class="list-group-item"><b>Comments: </b><span th:text="${delivery.comments}"></span></li>  
+                            <li class="list-group-item"><b>Delivered work: </b><a th:href="@{/files/{work} (work=${delivery.work})}" class="link link-primary" target="_blank">Download work</a></li>  
+                        </ul>
+                    </div>
+                </div>
+              </div>
+              <div class="row d-flex justify-content-center mt-4">
+                <div class="col-12 col-lg-8">
+                    <form 
+                        th:action="@{/save-grade}" 
+                        method="post" 
+                        class="d-flex flex-wrap justify-content-center"
+                    >
+                        <div class="form-group col-8">
+                            <label for="grade">Grade: </label>
+                            <input 
+                                type="text" 
+                                name="grade" 
+                                id="grade" 
+                                placeholder="Enter the grade"
+                                class="form-control mt-2"
+                            >
+                        </div>
+                        <div class="form-group col-8">
+                            <input 
+                                type="hidden" 
+                                name="id_delivery" 
+                                id="id_delivery" 
+                                class="form-control mt-2"
+                                th:value="${delivery.id_delivery}"
+                            >
+                        </div>
+                        <div class="form-group col-8 mt-2 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary">Save grade</button>
+                        </div>
+                    </form>
+                </div>
+              </div>
+            </div> 
+          </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    </body>
+</html>
